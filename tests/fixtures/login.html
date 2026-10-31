@@ -1,0 +1,18 @@
+<!-- Synthetic user-assistance fixture; no real credential or CAPTCHA is involved. -->
+<!doctype html><html><head><meta charset="utf-8"><title>Assistance fixture</title></head>
+<!-- The controlled user action establishes a persistent session cookie. -->
+<body><main id="content"></main>
+<!-- Simulate browser-only user assistance without contacting an external service. -->
+<script>
+// Read the eligible persistent session state after each visibility transfer.
+const authenticated=document.cookie.includes('fixture_auth=yes');
+// Show protected source only after the actual user-control step.
+document.getElementById('content').innerHTML=authenticated?'<h1>Authenticated source</h1><p>Original protected information.</p>':'<h1>User verification needed</h1><button id="continue">Continue</button>';
+// A real native click represents a person completing the synthetic assistance step.
+if(!authenticated)document.getElementById('continue').onclick=()=>{
+  // Keep this fixture cookie across the headless/headful browser restart.
+  document.cookie='fixture_auth=yes; max-age=3600; path=/';
+  // Refresh so the resulting UI proves that the step actually succeeded.
+  location.reload();
+};
+</script></body></html>

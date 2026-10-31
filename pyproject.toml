@@ -1,0 +1,12 @@
+[project]
+name = "intelligent-browser-agent"
+version = "0.1.0"
+description = "Local LangGraph browser agent with three selectable browser methods and two model providers"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 110

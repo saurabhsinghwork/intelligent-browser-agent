@@ -1,0 +1,54 @@
+<!-- Controlled browser fixture: exact text, native inputs, long content, and nested scrolling. -->
+<!doctype html>
+<html lang="en">
+<!-- Declare stable metadata and a readable viewport. -->
+<head><meta charset="utf-8"><title>Controlled Browser Task</title><style>body{font:16px sans-serif;margin:24px}p.record{min-height:120px}#panel{height:220px;overflow:auto;border:1px solid}td,th{padding:8px}pre{white-space:pre}</style></head>
+<!-- Preserve original text so extraction can be compared against fixture ground truth. -->
+<body>
+<!-- Include a decoy with the same visible button label as the desired control. -->
+<section><h2>Decoy card</h2><button id="decoy" onclick="document.querySelector('#effect').textContent='WRONG'">Open</button></section>
+<!-- The agent must identify the target using its surrounding context. -->
+<section><h2>Target card</h2><button id="correct" onclick="document.querySelector('#effect').textContent='Correct action'">Open</button></section>
+<!-- Use a native input so actual filling can be verified. -->
+<label>Search <input id="search" type="search" placeholder="Search records"></label>
+<!-- Expose a real post-click state change. -->
+<div id="effect">Ready</div>
+<!-- Keep the extraction scope explicit. -->
+<main>
+<!-- Preserve exact punctuation, Unicode, code indentation, and blank lines. -->
+<h1>Exact source</h1><p>Price: ₹1,299.00 — available</p><pre>if ready:
+    print("exact")
+
+    return True</pre>
+<!-- Populate enough records to require more than six viewport scrolls. -->
+<div id="records"></div>
+<!-- A nested scrolling table must be traversed independently. -->
+<div id="panel"><table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody id="rows"></tbody></table></div>
+</main>
+<!-- Include one same-origin frame so headed diagnostics prove only one cursor is rendered. -->
+<iframe id="cursor-frame" title="Cursor duplication check" src="chapter_a.html" style="width:320px;height:120px"></iframe>
+<!-- Construct deterministic known records without contacting external websites. -->
+<script>
+// Insert source records with stable IDs and meaningful duplicate values.
+for(let index=0;index<60;index++){
+  // Create one actual rendered paragraph per known source record.
+  const paragraph=document.createElement('p');
+  // Make source identity stable across overlapping viewport captures.
+  paragraph.id='record-'+index;
+  // Keep paragraphs tall enough to require full traversal.
+  paragraph.className='record';
+  // Preserve exact displayed text for assertions.
+  paragraph.textContent='Record '+index+': original wording';
+  // Append records in their defined UI order.
+  document.querySelector('#records').appendChild(paragraph);
+  // Create one known nested-table row with two explicit cells.
+  const row=document.createElement('tr');
+  // Retain a logical identity that also models virtualized-table conventions.
+  row.setAttribute('aria-rowindex',String(index+1));
+  // Keep table relationships explicit and preserve legitimate repeated values.
+  row.innerHTML='<td>Item '+index+'</td><td>Same value</td>';
+  // Preserve the UI's row order.
+  document.querySelector('#rows').appendChild(row);
+}
+</script>
+</body></html>

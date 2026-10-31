@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+data/sessions/
+data/run_artifacts/
+data/test_artifacts/
+data/*.log
+data/*.png
+
+# Playwright and runtime traces
+.playwright-cli/
+.playwright-mcp/
+
+# Scratch & temporary files
+scratch/
+temp_config.json
+*.sqlite3
+*.db
+

@@ -1,0 +1,23 @@
+<!-- Controlled finite-record fixture for generalized goal, constraint, and deduplication tests. -->
+<!doctype html>
+<html lang="en">
+<!-- Keep source structure stable while requiring several real viewport movements. -->
+<head><meta charset="utf-8"><title>Finite record goal</title><style>body{font:16px sans-serif;margin:0}.sticky{position:sticky;top:0;background:white;padding:16px;z-index:3;border-bottom:1px solid}main{padding:20px}li{min-height:150px;margin:8px;padding:12px;border:1px solid}</style></head>
+<!-- Repeated sticky controls must never enter entity-scoped output. -->
+<body><header class="sticky"><strong>Jobs</strong><button>Join now</button></header><main><h1>Engineering roles</h1><ul id="records"></ul></main>
+<!-- Generate known qualifying and deliberately irrelevant records. -->
+<script>
+// Create more records than the requested count so early stopping is measurable.
+for(let index=0;index<24;index++){
+  // Build one semantic result-card container.
+  const item=document.createElement('li');
+  // Assign a website-owned logical record identifier.
+  item.dataset.jobId=String(100000+index);
+  // Make the first twelve records satisfy both task constraints.
+  const matching=index<12;
+  // Preserve exact rendered wording for deterministic assertions.
+  item.innerHTML='<a href="/jobs/'+(100000+index)+'">'+(matching?'Python':'Java')+' Engineer '+index+'</a><p>Company '+index+'</p><p>'+(matching?'Pune':'Kakori')+'</p>';
+  // Append in actual displayed source order.
+  document.getElementById('records').appendChild(item);
+}
+</script></body></html>

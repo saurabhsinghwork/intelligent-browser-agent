@@ -1,0 +1,71 @@
+<!-- Controlled delayed-load and recycled-row fixture for complete traversal tests. -->
+<!doctype html><html lang="en">
+<!-- Keep geometry deterministic and expose an actual nested virtualized viewport. -->
+<head><meta charset="utf-8"><title>Dynamic Source</title><style>body{font:16px sans-serif;margin:20px}#virtual{height:240px;overflow:auto;border:1px solid}#space{height:2400px;position:relative}.row{position:absolute;height:30px;left:0;right:0;display:flex}.cell{width:160px}#lazy p{min-height:100px}</style></head>
+<!-- Preserve known exact source values for independent assertions. -->
+<body><main><h1>Dynamic source</h1>
+<!-- The virtualized DOM contains only a small subset of eighty logical rows at a time. -->
+<div id="virtual" role="grid"><div id="space"></div></div>
+<!-- Delayed growth starts only when the outer page approaches its current bottom. -->
+<section id="lazy"><h2>Lazy records</h2></section>
+</main>
+<!-- Keep all dynamic behavior local and deterministic. -->
+<script>
+// Track the actual virtualized viewport and retained layout spacer.
+const panel=document.getElementById('virtual'),space=document.getElementById('space');
+// Render a recycled window of logical rows without retaining old DOM nodes.
+const render=()=>{
+  // Determine the current logical starting row.
+  const first=Math.floor(panel.scrollTop/30);
+  // Remove old DOM nodes to reproduce the exact collection risk.
+  space.replaceChildren();
+  // Render a small overlapping window instead of the full dataset.
+  for(let index=first;index<Math.min(80,first+10);index++){
+    // Create a replacement logical row.
+    const row=document.createElement('div');
+    // Preserve row/cell semantics independently from text formatting.
+    row.setAttribute('role','row');
+    // Expose the logical identity even though the DOM node was recreated.
+    row.setAttribute('aria-rowindex',String(index+1));
+    // Position the row at its real content coordinate.
+    row.className='row';row.style.top=(index*30)+'px';
+    // Keep original cell wording and deliberately repeated values.
+    row.innerHTML='<span role="cell" class="cell">Virtual '+index+'</span><span role="cell" class="cell">Repeated value</span>';
+    // Append only the current logical window.
+    space.appendChild(row);
+  }
+};
+// Recycle nodes whenever actual scrolling changes the viewport.
+panel.addEventListener('scroll',render);
+// Populate the initial visible virtualized rows.
+render();
+// Track delayed finite records and prevent duplicate network-like loads.
+let count=0,busy=false;
+// Add a finite delayed batch only near the current page end.
+const load=()=>{
+  // Do not create an endless feed or concurrent duplicate batches.
+  if(busy||count>=24||scrollY+innerHeight<document.documentElement.scrollHeight-100)return;
+  // Expose actual busy state that collection must respect.
+  busy=true;document.getElementById('lazy').setAttribute('aria-busy','true');
+  // Reproduce content that arrives after the initial apparent bottom.
+  setTimeout(()=>{
+    // Append six known exact records in source order.
+    for(let limit=Math.min(24,count+6);count<limit;count++){
+      // Create an actual rendered source paragraph.
+      const paragraph=document.createElement('p');
+      // Preserve the exact original record wording.
+      paragraph.textContent='Lazy '+count+': unchanged source';
+      // Append in deterministic UI order.
+      document.getElementById('lazy').appendChild(paragraph);
+    }
+    // Mark the finite batch ready for capture.
+    busy=false;document.getElementById('lazy').setAttribute('aria-busy','false');
+    // A short first batch may still leave the viewport near the bottom.
+    load();
+  },350);
+};
+// Trigger lazy loading from actual outer-page scrolling.
+addEventListener('scroll',load);
+// Begin the initial finite batch when the page already fits the viewport.
+load();
+</script></body></html>

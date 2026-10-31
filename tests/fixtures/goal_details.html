@@ -1,0 +1,43 @@
+<!-- Controlled master-detail fixture for generalized complete-record collection tests. -->
+<!doctype html>
+<html lang="en">
+<!-- Keep the interface independent from any production website's names or selectors. -->
+<head><meta charset="utf-8"><title>Complete record goal</title><style>body{font:16px sans-serif;margin:0}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px;padding:18px}.records{display:flex;flex-direction:column;gap:8px}.records button{text-align:left;padding:12px}.detail{height:360px;overflow-y:auto;border:1px solid;padding:18px}.extra[hidden]{display:none}.spacer{height:260px}</style></head>
+<!-- Expose a finite list and one independently scrollable changing detail region. -->
+<body><div class="layout"><main><section class="records" aria-label="Results"><h1>Available roles</h1><div id="record-buttons"></div></section></main><aside id="detail-panel" class="detail" aria-live="polite"></aside></div>
+<!-- Populate deterministic entities and update the shared detail interface after selection. -->
+<script>
+// Render one complete record without changing the page URL.
+function renderDetail(index){
+  // Resolve the current detail panel once for this state update.
+  const panel=document.getElementById('detail-panel');
+  // Preserve enough exact content to require real panel traversal.
+  panel.innerHTML='<h2>Python Engineer '+index+'</h2><p>Company '+index+'</p><p>Pune</p><h3>Description</h3><p>Build and maintain Python services for record '+index+'. Collaborate with product and engineering teams, investigate production behavior, document decisions, and improve reliable delivery across the complete software lifecycle.</p><button id="show-more" aria-expanded="false" onclick="expandDetail()">Show more</button><section id="extra" class="extra" hidden><h3>Requirements</h3><p>Strong Python knowledge, testing experience, API design, debugging, version control, communication, and practical ownership of dependable systems for record '+index+'.</p><h3>Additional information</h3><p>This exact section is intentionally below the initial viewport so complete collection must expand the disclosure and traverse the selected detail region.</p></section><div class="spacer"></div><p>End of complete record '+index+'</p>';
+  // Every newly selected entity starts at the beginning of its own details.
+  panel.scrollTop=0;
+}
+// Reveal the finite one-time disclosure for the selected entity.
+function expandDetail(){
+  // Resolve the current disclosure and its associated source region.
+  const button=document.getElementById('show-more'), extra=document.getElementById('extra');
+  // Publish the real expanded state used by the generalized collector.
+  button.setAttribute('aria-expanded','true');
+  // Reveal the remaining exact source without removing the disclosure control.
+  extra.hidden=false;
+}
+// Create ten distinct selectable entities with stable website-owned identities.
+for(let index=1;index<=10;index++){
+  // Create an ordinary semantic control for this logical record.
+  const button=document.createElement('button');
+  // Keep a test-facing DOM ID separate from the application's generated target identity.
+  button.id='record-'+index;
+  // Preserve the exact visible entity label used during native input.
+  button.textContent='Python Engineer '+index+' — Company '+index+' — Pune';
+  // Update only the shared detail interface when this record is selected.
+  button.addEventListener('click',()=>renderDetail(index));
+  // Retain the displayed source order.
+  document.getElementById('record-buttons').appendChild(button);
+}
+// Begin with the first entity selected so the region is useful immediately.
+renderDetail(1);
+</script></body></html>

@@ -1,0 +1,44 @@
+<!-- Controlled tabs, expansion, button pagination, and open-shadow native targeting. -->
+<!doctype html><html><head><meta charset="utf-8"><title>Interactive extraction</title>
+<!-- Tall records force real traversal of each replacement state. -->
+<style>p.record{height:150px;margin:0}nav{padding:12px}button{padding:8px}</style></head>
+<!-- Scope extraction to the main requested interface. -->
+<body><main><h1>Interactive source</h1><details><summary>Extra details</summary><p>Expanded exact source: ₹42 — unchanged.</p></details>
+<!-- Native tabs preserve their selected state in evidence provenance. -->
+<div role="tablist"><button role="tab" aria-selected="true" id="alpha">Alpha</button><button role="tab" aria-selected="false" id="beta">Beta</button></div>
+<!-- Replace only the controlled finite records. -->
+<section id="records"></section>
+<!-- Finite button pagination has an explicit current-page marker. -->
+<nav aria-label="Pagination"><span aria-current="page" id="page"></span><button id="next">Next</button></nav>
+<!-- A separate finite load-more list exercises repeated native input. -->
+<section><div id="moreRecords"><p>More record 0</p></div><button id="more">Load more</button></section>
+<!-- An open shadow root exposes a real native button and rendered source. -->
+<div id="shadow"></div></main><script>
+// Preserve one selected tab and a finite page number for each tab.
+let tab='Alpha',pages={Alpha:1,Beta:1},more=0;
+// Render exact known records without changing the page URL.
+function render(){
+  // Expose each selected tab/page as a source context.
+  document.getElementById('records').innerHTML=Array.from({length:8},(_,i)=>'<p class="record">'+tab+' page '+pages[tab]+' record '+i+'</p>').join('');
+  // Show the actual finite page number without model inference.
+  document.getElementById('page').innerText=tab+' '+pages[tab];
+  // Disable Next after the third finite page.
+  document.getElementById('next').disabled=pages[tab]===3;
+  // Keep current tab semantics aligned with rendered source.
+  for(const id of ['alpha','beta'])document.getElementById(id).setAttribute('aria-selected',String(id===tab.toLowerCase()));
+}
+// Switching tabs retains a separate finite pagination cursor.
+for(const id of ['alpha','beta'])document.getElementById(id).onclick=()=>{tab=id==='alpha'?'Alpha':'Beta';render();};
+// A native Next click advances only the actual current tab.
+document.getElementById('next').onclick=()=>{pages[tab]++;render();};
+// Remove the finite load-more control after its last actual record.
+document.getElementById('more').onclick=()=>{more++;document.getElementById('moreRecords').insertAdjacentHTML('beforeend','<p>More record '+more+'</p>');if(more===3)document.getElementById('more').remove();};
+// Create open-shadow source and a native input target.
+const shadow=document.getElementById('shadow').attachShadow({mode:'open'});
+// Give the test an observable actual target effect.
+shadow.innerHTML='<button id="shadowButton">Shadow target</button><p id="shadowResult">Shadow source pending</p>';
+// Require trusted input rather than an invented tool result.
+shadow.getElementById('shadowButton').onclick=event=>{if(event.isTrusted)shadow.getElementById('shadowResult').innerText='Shadow source clicked';};
+// Establish the initial actual interface.
+render();
+</script></body></html>

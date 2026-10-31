@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- Provide a deterministic cross-site-style HTML sign-in interruption. -->
+<html lang="en">
+<head>
+  <!-- Keep fixture decoding and layout deterministic. -->
+  <meta charset="utf-8">
+  <!-- Identify the practical interruption test in browser diagnostics. -->
+  <title>Optional interruption fixture</title>
+  <style>
+    /* Give the task content enough height to require ordinary scrolling. */
+    main { min-height: 1800px; padding: 24px; }
+    /* Model a generic rendered modal without using a production website selector. */
+    dialog { position: fixed; width: 420px; padding: 24px; }
+    /* Place the semantic close control at the visible edge of the modal. */
+    dialog button { float: right; }
+  </style>
+</head>
+<body>
+  <!-- Retain source content that collection must reach after dismissal. -->
+  <main>
+    <!-- Supply a semantic task-relevant content region. -->
+    <article>
+      <!-- Preserve exact source wording for the collection assertion. -->
+      <h1>Research results</h1>
+      <!-- Keep one ordinary record independent from the interruption. -->
+      <p>Generalized browser result content.</p>
+    </article>
+  </main>
+  <!-- Place one lower promotional interruption behind the top-layer dialog. -->
+  <aside id="optional-app" class="app-popup" style="position:fixed;right:20px;bottom:20px;width:300px;height:120px;background:white;z-index:1">
+    <!-- This close control must not be selected while the dialog covers it. -->
+    <button type="button" aria-label="Dismiss" onclick="this.closest('aside').remove()">Dismiss</button>
+    <!-- Identify the lower layer as another supported optional interruption. -->
+    <p>Open the app for personalized updates.</p>
+  </aside>
+  <!-- Use native dialog semantics exposed identically to every executor. -->
+  <dialog id="optional-auth" role="dialog" aria-modal="true" style="z-index:10" open>
+    <!-- Expose a semantic icon label and ordinary native close behavior. -->
+    <button class="modal-dismiss-icon" type="button" aria-label="Close dialog" onclick="this.closest('dialog').close()">×</button>
+    <!-- Identify this as an optional authentication interruption. -->
+    <h2>Sign in to continue</h2>
+    <!-- Make dismissal appropriate for an information-only task. -->
+    <p>Create an account for personalized updates, or close this window to keep reading.</p>
+  </dialog>
+</body>
+</html>
