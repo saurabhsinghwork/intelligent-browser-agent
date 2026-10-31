@@ -188,6 +188,8 @@ def goal_records(blocks, goal):
             # This record does not satisfy the requested subject/location combination.
             continue
         # Prefer a stable semantic entity identity (e.g. title and company for job/product records).
+        # Extract lowercase title for deduplication.
+        title = str(block.get("title", "")).strip().lower()
         # Extract lowercase company name for deduplication.
         company = str(block.get("company", "")).strip().lower()
         # Read explicit entity key if provided by strategy.
